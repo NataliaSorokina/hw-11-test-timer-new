@@ -1,15 +1,16 @@
 import './sass/main.scss';
+import './js/dots';
+import refs from './js/refs.js';
+import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 
-const refs = {
-  input: document.querySelector('#date-selector'),
-  btn: document.querySelector('button'),
-  // timer: document.querySelector('.timer'),
-  days: document.querySelector('[data-days]'),
-  hours: document.querySelector('[data-hours]'),
-  minutes: document.querySelector('[data-minutes]'),
-  seconds: document.querySelector('[data-seconds]'),
-};
+
+// console.log(refs.field[0]);
+
+// refs.field[0].insertAdjacentHTML('afterend', '<div class="timer-delimetr">:</div>');
+// refs.field[1].insertAdjacentHTML('afterend', '<div class="timer-delimetr">:</div>');
+// refs.field[2].insertAdjacentHTML('afterend', '<div class="timer-delimetr">:</div>');
 
 refs.btn.setAttribute('disabled', true);
 refs.input.addEventListener('input', getSelectedDate);
@@ -24,17 +25,24 @@ refs.btn.addEventListener('click', getRemainingTime);
 function getSelectedDate() {
   const selectedDate = new Date(refs.input.value);
   console.log(selectedDate);
-  const currentTime = Date.now();
-console.log(currentTime);
-  if (selectedDate < currentTime) {
-      alert('Please choose a date in the future');
+  const currentDate = Date.now();
+console.log(currentDate);
+  if (selectedDate < currentDate) {
+      // alert('Please choose a date in the future');
+    // Swal.fire('Please choose a date in the future')
+    Swal.fire(
+  'Error',
+  'Please choose a date in the future',
+  'warning'
+)
   } else {
     refs.btn.removeAttribute('disabled');
   }
 }
 
 function getRemainingTime() {
-  const selectedDate = new Date(refs.input.value);
+  // const selectedDate = new Date(refs.input.value);
+  const selectedDate = Date.parse(new Date(refs.input.value)) - (180 * 60 * 1000);
   console.log(selectedDate);
   setInterval(() => {
             const currentTime = Date.now();
@@ -50,10 +58,15 @@ function getRemainingTime() {
 }
 
 function updateClockface({ days, hours, minutes, seconds }) {
-  refs.days.textContent = days;
-  refs.hours.textContent = hours;
-  refs.minutes.textContent = minutes;
-  refs.seconds.textContent = seconds;
+  const ds = refs.days.textContent = days;
+  const hrs = refs.hours.textContent = hours;
+  const mins = refs.minutes.textContent = minutes;
+  const secs = refs.seconds.textContent = seconds;
+  // console.log(`refs.days:refs.hours:refs.minutes:refs.seconds}`);
+  // console.log(`${ds}:${hrs}:${mins}:${secs}`);
+  // return `${ds}:${hrs}:${mins}:${secs}`;
+  // return `${refs.days}:${refs.hours}:${refs.minutes}:${refs.seconds}`;
+  
 }
 
 function convertMs(ms) {
@@ -64,16 +77,20 @@ function convertMs(ms) {
   const day = hour * 24;
 
   // Remaining days
-  const days = Math.floor(ms / day);
+  const days = pad(Math.floor(ms / day));
   // Remaining hours
-  const hours = Math.floor((ms % day) / hour);
+  const hours = pad(Math.floor((ms % day) / hour));
   // Remaining minutes
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = pad(Math.floor(((ms % day) % hour) / minute));
   // Remaining seconds
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = pad(Math.floor((((ms % day) % hour) % minute) / second));
 
   return { days, hours, minutes, seconds };
 }
+
+ function pad(value) {
+    return String(value).padStart(2, '0');
+  }
 
 console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
 console.log(convertMs(140000)); //{days: 0, hours: 0, minutes: 2, seconds: 20}
