@@ -1,5 +1,5 @@
 import './sass/main.scss';
-import './js/dots';
+import './js/elems.js';
 import refs from './js/refs.js';
 import Swal from 'sweetalert2';
 // import Swal from 'sweetalert2/dist/sweetalert2.js';
@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 // refs.field[2].insertAdjacentHTML('afterend', '<div class="timer-delimetr">:</div>');
 
 refs.btn.setAttribute('disabled', true);
+
 refs.input.addEventListener('input', getSelectedDate);
 refs.btn.addEventListener('click', getRemainingTime);
 
@@ -41,6 +42,8 @@ console.log(currentDate);
 }
 
 function getRemainingTime() {
+  refs.btn.setAttribute('disabled', true);
+  refs.input.setAttribute('disabled', true);
   // const selectedDate = new Date(refs.input.value);
   const selectedDate = Date.parse(new Date(refs.input.value)) - (180 * 60 * 1000);
   console.log(selectedDate);

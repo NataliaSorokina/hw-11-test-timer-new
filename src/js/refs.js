@@ -1,8 +1,10 @@
+import elems from './elems.js';
 export default {
   input: document.querySelector('#date-selector'),
-  btn: document.querySelector('button'),
-  // timer: document.querySelector('.timer'),
+  timer: document.querySelector('.timer'),
   field: document.querySelectorAll('.field'),
+  startBtn: document.querySelector('[data-start]'),
+  clearBtn: document.querySelector('[data-clear]'),
   days: document.querySelector('[data-days]'),
   hours: document.querySelector('[data-hours]'),
   minutes: document.querySelector('[data-minutes]'),
